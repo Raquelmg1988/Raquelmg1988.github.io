@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Raquel Mendes — QA Engineer Sênior</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0B1220;
+    --surface:#121B30;
+    --surface-alt:#182542;
+    --border:#22315A;
+    --text:#E7ECF6;
+    --text-muted:#8CA0C7;
+    --pass:#34D399;
+    --pass-dim:#1B4A3C;
+    --amber:#F5A623;
+    --line:#28396A;
+    --radius:10px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'IBM Plex Sans', sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--pass); color:#04140F;}
+
+  h1,h2,h3{ font-family:'Sora', sans-serif; letter-spacing:-0.02em; }
+  .mono{ font-family:'IBM Plex Mono', monospace; }
+
+  a{ color:inherit; }
+
+  .wrap{ max-width:960px; margin:0 auto; padding:0 24px; }
+
+  /* ---------- TOP BAR ---------- */
+  .topbar{
+    position:sticky; top:0; z-index:50;
+    background:rgba(11,18,32,0.88);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--border);
+  }
+  .topbar-inner{
+    max-width:960px; margin:0 auto; padding:14px 24px;
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  .brand{ display:flex; align-items:center; gap:10px; font-family:'Sora',sans-serif; font-weight:700; font-size:15px;}
+  .brand-dot{ width:9px; height:9px; border-radius:50%; background:var(--pass); box-shadow:0 0 0 3px var(--pass-dim); flex-shrink:0;}
+  .topnav{ display:flex; gap:22px; font-size:13px; font-family:'IBM Plex Mono',monospace; color:var(--text-muted);}
+  .topnav a{ text-decoration:none; transition:color .15s;}
+  .topnav a:hover{ color:var(--pass); }
+  @media (max-width:640px){ .topnav{ display:none; } }
+
+  /* ---------- HERO ---------- */
+  .hero{ padding:88px 0 56px; }
+  .status-chip{
+    display:inline-flex; align-items:center; gap:8px;
+    background:var(--pass-dim); border:1px solid #2E7A5F;
+    color:var(--pass); font-family:'IBM Plex Mono',monospace;
+    font-size:12px; font-weight:500; letter-spacing:0.04em;
+    padding:6px 12px; border-radius:99px; margin-bottom:28px;
+  }
+  .status-chip svg{ width:12px; height:12px; }
+
+  .hero h1{ font-size:clamp(36px,6vw,58px); font-weight:800; line-height:1.05; }
+  .hero .role{
+    margin-top:14px; font-size:clamp(16px,2.4vw,20px); color:var(--text-muted);
+    font-weight:500; max-width:640px;
+  }
+  .hero .role b{ color:var(--text); font-weight:600; }
+
+  .hero-top{ display:flex; align-items:center; gap:22px; }
+  .avatar{
+    width:112px; height:112px; border-radius:50%; object-fit:cover; flex-shrink:0;
+    border:3px solid var(--pass); box-shadow:0 0 0 4px var(--pass-dim);
+  }
+  @media (max-width:560px){
+    .hero-top{ flex-direction:column; align-items:flex-start; gap:16px; }
+  }
+
+  .hero-meta{
+    margin-top:22px; display:flex; flex-wrap:wrap; gap:10px 22px;
+    font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--text-muted);
+  }
+  .hero-meta span{ display:flex; align-items:center; gap:6px; }
+
+  .hero-actions{ margin-top:34px; display:flex; gap:12px; flex-wrap:wrap; }
+  .btn{
+    font-family:'IBM Plex Mono',monospace; font-size:13px; font-weight:500;
+    padding:11px 18px; border-radius:8px; text-decoration:none;
+    display:inline-flex; align-items:center; gap:8px; transition:transform .15s, background .15s;
+    border:1px solid var(--border);
+  }
+  .btn:hover{ transform:translateY(-1px); }
+  .btn-primary{ background:var(--pass); color:#04140F; border-color:var(--pass); }
+  .btn-primary:hover{ background:#3fe6ac; }
+  .btn-ghost{ background:var(--surface); color:var(--text); }
+  .btn-ghost:hover{ background:var(--surface-alt); }
+
+  /* ---------- SUITE SUMMARY (stats) ---------- */
+  .suite{
+    margin-top:52px; border:1px solid var(--border); border-radius:var(--radius);
+    background:var(--surface); overflow:hidden;
+  }
+  .suite-head{
+    padding:12px 18px; border-bottom:1px solid var(--border);
+    font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--text-muted);
+    display:flex; justify-content:space-between; align-items:center;
+  }
+  .suite-grid{ display:grid; grid-template-columns:repeat(4,1fr); }
+  .suite-cell{ padding:22px 18px; border-right:1px solid var(--border); }
+  .suite-cell:last-child{ border-right:none; }
+  .suite-cell .num{ font-family:'Sora',sans-serif; font-size:28px; font-weight:700; color:var(--pass); }
+  .suite-cell .lbl{ margin-top:4px; font-size:12px; color:var(--text-muted); }
+  @media (max-width:640px){
+    .suite-grid{ grid-template-columns:repeat(2,1fr); }
+    .suite-cell{ border-bottom:1px solid var(--border); }
+  }
+
+  /* ---------- SECTION SHELL ---------- */
+  section{ padding:72px 0; border-top:1px solid var(--border); }
+  .section-tag{
+    font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--pass);
+    letter-spacing:0.08em; text-transform:uppercase; margin-bottom:10px;
+    display:flex; align-items:center; gap:8px;
+  }
+  .section-tag::before{ content:"//"; color:var(--text-muted); }
+  section h2{ font-size:clamp(24px,3.4vw,32px); font-weight:700; margin-bottom:18px; }
+  .section-lede{ color:var(--text-muted); max-width:640px; margin-bottom:36px; font-size:15px; }
+
+  /* ---------- ABOUT ---------- */
+  .about-body p{ max-width:720px; color:#C6D0E6; margin-bottom:16px; font-size:15.5px; }
+  .about-body b{ color:var(--text); }
+
+  /* ---------- SKILLS ---------- */
+  .skill-group{ margin-bottom:26px; }
+  .skill-group h3{
+    font-size:13px; font-family:'IBM Plex Mono',monospace; color:var(--text-muted);
+    text-transform:uppercase; letter-spacing:0.05em; margin-bottom:12px; font-weight:500;
+  }
+  .tag-row{ display:flex; flex-wrap:wrap; gap:8px; }
+  .tag{
+    font-family:'IBM Plex Mono',monospace; font-size:12.5px; color:var(--text);
+    background:var(--surface); border:1px solid var(--border); border-radius:6px;
+    padding:6px 11px;
+  }
+
+  /* ---------- EXPERIENCE / PIPELINE ---------- */
+  .pipeline{ position:relative; padding-left:34px; }
+  .pipeline::before{
+    content:""; position:absolute; left:9px; top:6px; bottom:6px; width:2px;
+    background:linear-gradient(var(--pass), var(--line) 12%, var(--line) 88%, transparent);
+  }
+  .job{ position:relative; padding-bottom:38px; }
+  .job:last-child{ padding-bottom:0; }
+  .job-node{
+    position:absolute; left:-34px; top:2px; width:20px; height:20px; border-radius:50%;
+    background:var(--pass-dim); border:2px solid var(--pass);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .job-node svg{ width:10px; height:10px; }
+  .job.current .job-node{ background:var(--pass); }
+  .job-card{
+    background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
+    padding:20px 22px;
+  }
+  .job-top{ display:flex; justify-content:space-between; align-items:flex-start; gap:12px; flex-wrap:wrap; }
+  .job-role{ font-family:'Sora',sans-serif; font-weight:700; font-size:17px; }
+  .job-company{ color:var(--pass); font-weight:600; font-size:14.5px; margin-top:2px; }
+  .job-period{
+    font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--text-muted);
+    background:var(--surface-alt); border:1px solid var(--border); border-radius:99px;
+    padding:4px 11px; white-space:nowrap;
+  }
+  .job.current .job-period{ color:var(--amber); border-color:#5C4419; }
+  .job-sector{ font-size:12.5px; color:var(--text-muted); margin-top:6px; font-style:italic; }
+  .job-list{ margin-top:14px; padding-left:18px; color:#C6D0E6; font-size:14.5px; }
+  .job-list li{ margin-bottom:6px; }
+  .job-stack{ margin-top:14px; display:flex; flex-wrap:wrap; gap:6px; }
+  .job-stack span{
+    font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--text-muted);
+    border:1px solid var(--border); border-radius:5px; padding:3px 8px;
+  }
+
+  .earlier-toggle{
+    margin-top:8px; background:none; border:1px dashed var(--border); color:var(--text-muted);
+    font-family:'IBM Plex Mono',monospace; font-size:12.5px; padding:10px 16px; border-radius:8px;
+    cursor:pointer; width:100%; text-align:left; display:flex; justify-content:space-between; align-items:center;
+  }
+  .earlier-toggle:hover{ border-color:var(--pass); color:var(--pass); }
+  .earlier-list{ display:none; margin-top:14px; }
+  .earlier-list.open{ display:block; }
+  .earlier-item{
+    display:flex; justify-content:space-between; gap:12px; padding:12px 0; border-bottom:1px solid var(--border);
+    font-size:14px; flex-wrap:wrap;
+  }
+  .earlier-item:last-child{ border-bottom:none; }
+  .earlier-item .er{ color:var(--text); font-weight:600; }
+  .earlier-item .ec{ color:var(--text-muted); font-size:13px; }
+  .earlier-item .ep{ font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--text-muted); white-space:nowrap; }
+
+  /* ---------- PROJECTS ---------- */
+  .proj-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:16px; }
+  .proj-card{
+    background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
+    padding:20px; display:flex; flex-direction:column; gap:12px; text-decoration:none;
+    transition:border-color .15s, transform .15s;
+  }
+  .proj-card:hover{ border-color:var(--pass); transform:translateY(-2px); }
+  .proj-top{ display:flex; justify-content:space-between; align-items:center; text-decoration:none; color:inherit; }
+  .proj-name{ font-family:'IBM Plex Mono',monospace; font-weight:600; font-size:14px; color:var(--text); }
+  .proj-arrow{ color:var(--text-muted); font-size:15px; }
+  .proj-desc{ font-size:13.5px; color:var(--text-muted); flex-grow:1; }
+  .proj-lang{ display:flex; align-items:center; gap:6px; font-size:12px; color:var(--text-muted); font-family:'IBM Plex Mono',monospace; }
+  .lang-dot{ width:8px; height:8px; border-radius:50%; }
+  .proj-extra{ font-family:'IBM Plex Mono',monospace; font-size:11.5px; padding-top:10px; border-top:1px solid var(--border); }
+  .proj-extra a{ color:var(--pass); text-decoration:none; }
+  .proj-extra a:hover{ text-decoration:underline; }
+
+  /* ---------- CERT / EDU ---------- */
+  .two-col{ display:grid; grid-template-columns:1.2fr 1fr; gap:40px; }
+  @media (max-width:720px){ .two-col{ grid-template-columns:1fr; } }
+  .cert-list{ list-style:none; }
+  .cert-list li{
+    display:flex; align-items:center; gap:10px; padding:10px 0; border-bottom:1px solid var(--border); font-size:14.5px;
+  }
+  .cert-list li:last-child{ border-bottom:none; }
+  .cert-list svg{ width:15px; height:15px; color:var(--pass); flex-shrink:0; }
+  .edu-card{ background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:20px; }
+  .edu-card .deg{ font-weight:700; font-family:'Sora',sans-serif; }
+  .edu-card .sch{ color:var(--pass); font-size:14px; margin-top:4px; }
+  .edu-card .per{ font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--text-muted); margin-top:8px; }
+
+  /* ---------- CONTACT / FOOTER ---------- */
+  .contact-box{
+    background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
+    padding:40px; text-align:center;
+  }
+  .contact-box h2{ margin-bottom:8px; }
+  .contact-box p{ color:var(--text-muted); margin-bottom:26px; }
+  .contact-links{ display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+
+  footer{ padding:36px 0 60px; text-align:center; color:var(--text-muted); font-size:12.5px; font-family:'IBM Plex Mono',monospace; }
+
+  .reveal{ opacity:0; transform:translateY(16px); transition:opacity .6s ease, transform .6s ease; }
+  .reveal.visible{ opacity:1; transform:translateY(0); }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brand"><span class="brand-dot"></span>Raquel Mendes</div>
+    <nav class="topnav">
+      <a href="#sobre">sobre</a>
+      <a href="#stack">stack</a>
+      <a href="#experiencia">experiência</a>
+      <a href="#projetos">projetos</a>
+      <a href="#contato">contato</a>
+    </nav>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- HERO -->
+  <section class="hero" style="border-top:none; padding-top:88px;">
+    <div class="status-chip">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 12l6 6L20 6"/></svg>
+      16 ANOS DE EXPERIÊNCIA · TODOS OS CICLOS ENTREGUES
+    </div>
+    <div class="hero-top">
+      <img class="avatar" src="img/raquel-mendes.jpg" alt="Raquel Mendes">
+      <div>
+        <h1>Raquel Mendes</h1>
+        <p class="role">
+          <b>QA Engineer Sênior</b> — automação de testes E2E e API com Robot Framework, Playwright, Selenium e Python.
+          Qualidade como responsabilidade do primeiro requisito à produção.
+        </p>
+      </div>
+    </div>
+    <div class="hero-meta">
+      <span class="mono">📍 São Paulo, Brasil</span>
+      <span class="mono">✉ raquelmg88@gmail.com</span>
+      <span class="mono">🏦 Financeiro · Saúde · Seguros · Indústria · E-commerce</span>
+    </div>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="https://www.linkedin.com/in/raquel-mendes-29555123/" target="_blank" rel="noopener">Ver LinkedIn ↗</a>
+      <a class="btn btn-ghost" href="https://github.com/Raquelmg1988" target="_blank" rel="noopener">Ver GitHub ↗</a>
+      <a class="btn btn-ghost" href="mailto:raquelmg88@gmail.com">Enviar e-mail</a>
+    </div>
+
+    <div class="suite reveal">
+      <div class="suite-head">
+        <span>test_suite: carreira_raquel_mendes.spec</span>
+        <span style="color:var(--pass)">4 passed</span>
+      </div>
+      <div class="suite-grid">
+        <div class="suite-cell">
+          <div class="num">16</div>
+          <div class="lbl">anos em Qualidade de Software</div>
+        </div>
+        <div class="suite-cell">
+          <div class="num">12+</div>
+          <div class="lbl">empresas e projetos críticos</div>
+        </div>
+        <div class="suite-cell">
+          <div class="num">5</div>
+          <div class="lbl">setores regulados atendidos</div>
+        </div>
+        <div class="suite-cell">
+          <div class="num">3</div>
+          <div class="lbl">frameworks de automação dominados</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SOBRE -->
+  <section id="sobre">
+    <div class="section-tag reveal">sobre</div>
+    <h2 class="reveal">Qualidade não é uma etapa — é uma responsabilidade contínua</h2>
+    <div class="about-body reveal">
+      <p>Atuo há mais de <b>16 anos em Qualidade de Software</b>, com uma convicção que guia meu trabalho: qualidade não é uma etapa do processo — é uma responsabilidade que começa no primeiro requisito e vai até a produção.</p>
+      <p>Ao longo dessa trajetória, atuei em projetos críticos nos setores <b>financeiro, saúde, seguros, indústria e e-commerce</b>, incluindo sistemas regulados e de alta complexidade, como soluções bancárias do Bradesco e Itaú, e plataformas integradas ao Salesforce e SAP.</p>
+      <p>Tenho experiência consolidada em testes funcionais, E2E, integração e exploratórios, com forte atuação em <b>automação</b> (Robot Framework, Playwright, Selenium, Ruby/Cucumber) e <b>testes de API</b> (Postman, Swagger). Já atuei também como referência técnica de QA em times ágeis e como Product Owner de apoio em time de BI, o que me deu uma visão ampla de priorização, backlog e alinhamento com stakeholders.</p>
+      <p>Mais recentemente, também venho validando soluções de atendimento ao cliente com <b>IA generativa (LLMs)</b> — testando desde a integração com sistemas corporativos (Salesforce) até a confiabilidade das respostas automatizadas antes de reduzir o volume de atendimento humano.</p>
+    </div>
+  </section>
+
+  <!-- STACK -->
+  <section id="stack">
+    <div class="section-tag reveal">stack técnica</div>
+    <h2 class="reveal">Ferramentas do dia a dia</h2>
+    <p class="section-lede reveal">Organizadas como estão no meu fluxo de trabalho real: da automação ao relatório final.</p>
+
+    <div class="reveal">
+      <div class="skill-group">
+        <h3>🤖 Automação de testes</h3>
+        <div class="tag-row">
+          <span class="tag">Robot Framework</span><span class="tag">Playwright</span><span class="tag">Selenium WebDriver</span>
+          <span class="tag">Ruby / Cucumber</span><span class="tag">Capybara</span><span class="tag">Python</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <h3>🔌 Testes de API & dados</h3>
+        <div class="tag-row">
+          <span class="tag">Postman</span><span class="tag">Swagger / REST</span><span class="tag">SQL Server</span><span class="tag">MongoDB</span><span class="tag">MySQL</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <h3>📋 Gestão de testes & rastreabilidade</h3>
+        <div class="tag-row">
+          <span class="tag">JIRA</span><span class="tag">Azure DevOps</span><span class="tag">Azure Test Plans</span>
+          <span class="tag">Octane</span><span class="tag">Xray</span><span class="tag">TestLink</span><span class="tag">Allure Reports</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <h3>⚙️ Metodologias & plataformas</h3>
+        <div class="tag-row">
+          <span class="tag">Scrum</span><span class="tag">Kanban</span><span class="tag">BDD / Gherkin</span>
+          <span class="tag">Shift Left / Shift Right</span><span class="tag">GMUD</span><span class="tag">Salesforce</span><span class="tag">SAP</span><span class="tag">GitHub / GitLab CI-CD</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIÊNCIA -->
+  <section id="experiencia">
+    <div class="section-tag reveal">experiência</div>
+    <h2 class="reveal">Pipeline de carreira</h2>
+    <p class="section-lede reveal">Cada posição, como um estágio de pipeline: planejada, executada e entregue.</p>
+
+    <div class="pipeline reveal">
+
+      <div class="job current">
+        <div class="job-node"><svg viewBox="0 0 24 24" fill="none" stroke="#34D399" stroke-width="3"><path d="M4 12l6 6L20 6"/></svg></div>
+        <div class="job-card">
+          <div class="job-top">
+            <div>
+              <div class="job-role">Analista de Qualidade Sênior</div>
+              <div class="job-company">Grupo Elfa</div>
+            </div>
+            <div class="job-period">set 2025 — atual</div>
+          </div>
+          <div class="job-sector">Saúde / Distribuição Farmacêutica</div>
+          <ul class="job-list">
+            <li>Planejamento e execução de testes E2E em sistemas web integrados ao Salesforce, cobrindo pedidos, clientes e status de processamento.</li>
+            <li>Validação do fluxo de integração entre uma solução de atendimento autônomo com IA (LLMs OpenAI/Claude) e o Salesforce, da leitura de casos até a resposta automática ao cliente.</li>
+            <li>Automação de testes Web e API com Robot Framework e Playwright, integrada ao Allure Reports com notificações no Microsoft Teams.</li>
+            <li>Participação ativa em GMUD, com evidências de teste, análise de riscos e suporte a deploy em produção — <a href="https://github.com/Raquelmg1988/portal-cliente-qa-portfolio/blob/main/docs/GMUD-acessos.md" target="_blank" rel="noopener" style="color:var(--pass); text-decoration:none;">ver exemplo ↗</a>.</li>
+          </ul>
+          <div class="job-stack"><span>Robot Framework</span><span>Playwright</span><span>Postman</span><span>Salesforce</span><span>LLM / IA Generativa</span><span>JIRA</span></div>
+        </div>
+      </div>
+
+      <div class="job">
+        <div class="job-node"><svg viewBox="0 0 24 24" fill="none" stroke="#34D399" stroke-width="3"><path d="M4 12l6 6L20 6"/></svg></div>
+        <div class="job-card">
+          <div class="job-top">
+            <div>
+              <div class="job-role">Analista de Qualidade Sênior</div>
+              <div class="job-company">7COMm (consultoria) — cliente Bradesco</div>
+            </div>
+            <div class="job-period">mar 2025 — ago 2025</div>
+          </div>
+          <div class="job-sector">Financeiro / Bancário</div>
+          <ul class="job-list">
+            <li>QA sênior em sistemas bancários críticos: risco (RISC), cadastro (RUCA), financeiro/relacionamento (RUFI) e agronegócio.</li>
+            <li>Cenários e casos de teste em Octane e Xray, com validação de requisitos regulatórios do Banco Central.</li>
+          </ul>
+          <div class="job-stack"><span>Octane</span><span>Xray</span><span>Gherkin</span><span>Sistemas legados</span></div>
+        </div>
+      </div>
+
+      <div class="job">
+        <div class="job-node"><svg viewBox="0 0 24 24" fill="none" stroke="#34D399" stroke-width="3"><path d="M4 12l6 6L20 6"/></svg></div>
+        <div class="job-card">
+          <div class="job-top">
+            <div>
+              <div class="job-role">Analista de Qualidade Sênior — Consultora PJ</div>
+              <div class="job-company">ICON Solutions do Brasil</div>
+            </div>
+            <div class="job-period">ago 2020 — mai 2024</div>
+          </div>
+          <div class="job-sector">Saúde · Seguros · Varejo · Insurtech — clientes: Grupo Elfa, Grupo Fleury, Cotabest, Ciclic, Sura Seguros</div>
+          <ul class="job-list">
+            <li>Referência técnica de QA, com mentoria de uma equipe de 5 analistas júniors (Ciclic) e apoio à liderança de QA (Cotabest).</li>
+            <li>Atuação simultânea como QA e Product Owner de apoio em time de BI no Grupo Elfa, migrando o backlog de planilhas para o JIRA.</li>
+            <li>Gestão de ciclo completo de testes em Azure Test Plans e TestLink em sistemas de seguros e diagnóstico médico (Sura, Fleury).</li>
+          </ul>
+          <div class="job-stack"><span>Ruby/Cucumber</span><span>Selenium</span><span>Azure Test Plans</span><span>TestLink</span><span>Power Apps</span></div>
+        </div>
+      </div>
+
+      <div class="job">
+        <div class="job-node"><svg viewBox="0 0 24 24" fill="none" stroke="#34D399" stroke-width="3"><path d="M4 12l6 6L20 6"/></svg></div>
+        <div class="job-card">
+          <div class="job-top">
+            <div>
+              <div class="job-role">Analista de Qualidade Sênior</div>
+              <div class="job-company">Tecnobank</div>
+            </div>
+            <div class="job-period">abr 2019 — ago 2020</div>
+          </div>
+          <div class="job-sector">Fintech / Regtech — crédito, registro de contratos e garantias</div>
+          <ul class="job-list">
+            <li>Testes funcionais e de integração em APIs e Webservices, validando interoperabilidade entre sistemas financeiros.</li>
+            <li>Automação com Ruby, Cucumber e Capybara; validação de integridade de dados em SQL Server.</li>
+          </ul>
+          <div class="job-stack"><span>Postman</span><span>Swagger</span><span>SQL Server</span><span>Ruby/Cucumber</span></div>
+        </div>
+      </div>
+
+      <div class="job">
+        <div class="job-node"><svg viewBox="0 0 24 24" fill="none" stroke="#34D399" stroke-width="3"><path d="M4 12l6 6L20 6"/></svg></div>
+        <div class="job-card">
+          <div class="job-top">
+            <div>
+              <div class="job-role">Analista de Qualidade Sênior</div>
+              <div class="job-company">Duratex</div>
+            </div>
+            <div class="job-period">fev 2018 — abr 2019</div>
+          </div>
+          <div class="job-sector">Indústria — materiais de construção, painéis, louças e metais</div>
+          <ul class="job-list">
+            <li>Testes web/mobile e automação com Ruby, Cucumber e Capybara em sistemas integrados a SAP e Salesforce.</li>
+            <li>Levantamento de requisitos em campo com usuários finais, contribuindo para melhorias de UX.</li>
+          </ul>
+          <div class="job-stack"><span>SAP</span><span>Salesforce</span><span>Gherkin</span><span>Android Studio</span></div>
+        </div>
+      </div>
+
+      <button class="earlier-toggle" id="toggleEarlier">
+        <span>▸ Ver experiência anterior (2009 — 2018, 5 posições)</span>
+        <span class="mono" style="color:var(--text-muted)">expandir</span>
+      </button>
+
+      <div class="earlier-list" id="earlierList">
+        <div class="earlier-item">
+          <div><div class="er">Analista de Qualidade Sr.</div><div class="ec">Grupo Taking / Audatex — Portal de Sinistro e Reparação</div></div>
+          <div class="ep">nov 2016 — fev 2018</div>
+        </div>
+        <div class="earlier-item">
+          <div><div class="er">Analista de Qualidade Pleno</div><div class="ec">Grupo LTM</div></div>
+          <div class="ep">dez 2014 — ago 2016</div>
+        </div>
+        <div class="earlier-item">
+          <div><div class="er">Analista de Qualidade Pleno</div><div class="ec">BizTalking — implantação WMS/SAP, cliente Leroy Merlin</div></div>
+          <div class="ep">mar 2014 — nov 2014</div>
+        </div>
+        <div class="earlier-item">
+          <div><div class="er">Analista de Teste Pleno</div><div class="ec">Deal. — clientes Carrefour, Coelho da Fonseca, Dasa</div></div>
+          <div class="ep">mar 2013 — out 2013</div>
+        </div>
+        <div class="earlier-item">
+          <div><div class="er">Analista de Teste Pleno</div><div class="ec">Winsoft Consultoria — projetos críticos Itaú</div></div>
+          <div class="ep">dez 2010 — mar 2013</div>
+        </div>
+        <div class="earlier-item">
+          <div><div class="er">Analista de Teste Jr.</div><div class="ec">Livraria Saraiva — implantação de ERP</div></div>
+          <div class="ep">jul 2009 — nov 2010</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJETOS -->
+  <section id="projetos">
+    <div class="section-tag reveal">github</div>
+    <h2 class="reveal">Projetos de automação</h2>
+    <p class="section-lede reveal">Repositórios públicos com automações de testes E2E e API.</p>
+
+    <div class="proj-grid reveal">
+      <div class="proj-card">
+        <a class="proj-top" href="https://github.com/Raquelmg1988/portal-cliente-qa-portfolio" target="_blank" rel="noopener">
+          <span class="proj-name">portal-cliente-qa-portfolio</span>
+          <span class="proj-arrow">↗</span>
+        </a>
+        <p class="proj-desc">Automação E2E de um portal do cliente fictício (login, cadastro, cotações, pedidos) com Robot Framework e Playwright/Browser, dados gerados via Faker.</p>
+        <span class="proj-lang"><span class="lang-dot" style="background:#3178c6"></span>RobotFramework</span>
+        <div class="proj-extra">📄 <a href="https://github.com/Raquelmg1988/portal-cliente-qa-portfolio/blob/main/docs/GMUD-acessos.md" target="_blank" rel="noopener">Ver exemplo de GMUD ↗</a></div>
+      </div>
+      <div class="proj-card">
+        <a class="proj-top" href="https://github.com/Raquelmg1988/qa-robot-api-cotacao-portfolio" target="_blank" rel="noopener">
+          <span class="proj-name">qa-robot-api-cotacao-portfolio</span>
+          <span class="proj-arrow">↗</span>
+        </a>
+        <p class="proj-desc">Testes de contrato e integração de uma API de cotação de frete com Robot Framework e RequestsLibrary, validando o backend contra a especificação Swagger.</p>
+        <span class="proj-lang"><span class="lang-dot" style="background:#3178c6"></span>RobotFramework</span>
+        <div class="proj-extra">📄 <a href="https://github.com/Raquelmg1988/qa-robot-api-cotacao-portfolio/blob/main/RELATORIO-INCIDENTES.md" target="_blank" rel="noopener">Ver relatório de incidentes ↗</a></div>
+      </div>
+      <div class="proj-card">
+        <a class="proj-top" href="https://github.com/Raquelmg1988/contrato-automacao-demo" target="_blank" rel="noopener">
+          <span class="proj-name">contrato-automacao-demo</span>
+          <span class="proj-arrow">↗</span>
+        </a>
+        <p class="proj-desc">Automação de testes de registro de contratos com Ruby, Cucumber e Capybara, demonstrando BDD/Gherkin como ponte entre QA e negócio.</p>
+        <span class="proj-lang"><span class="lang-dot" style="background:#701516"></span>Ruby</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- CERTIFICAÇÕES + FORMAÇÃO -->
+  <section id="formacao">
+    <div class="section-tag reveal">formação</div>
+    <h2 class="reveal">Certificações & educação</h2>
+
+    <div class="two-col reveal">
+      <div>
+        <h3 style="font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--text-muted); text-transform:uppercase; margin-bottom:12px;">Certificações</h3>
+        <ul class="cert-list">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 12l6 6L20 6"/></svg>Agile Scrum Foundation (ASF)</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 12l6 6L20 6"/></svg>BPMN — Modelagem de Processos de Negócio</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 12l6 6L20 6"/></svg>ANT — Analista de Negócio de TI</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 12l6 6L20 6"/></svg>Levantamento e Especificação de Requisitos</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 12l6 6L20 6"/></svg>Automação de Testes com Robot Framework</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 12l6 6L20 6"/></svg>Ruby / Cucumber — Automação de Testes</li>
+        </ul>
+      </div>
+      <div>
+        <h3 style="font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--text-muted); text-transform:uppercase; margin-bottom:12px;">Formação acadêmica</h3>
+        <div class="edu-card">
+          <div class="deg">Tecnólogo em Análise e Desenvolvimento de Sistemas</div>
+          <div class="sch">Faculdade Flamingo</div>
+          <div class="per">jan 2009 — dez 2011</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTATO -->
+  <section id="contato">
+    <div class="contact-box reveal">
+      <h2>Vamos conversar?</h2>
+      <p>Aberta a novas oportunidades em Qualidade de Software e Automação de Testes.</p>
+      <div class="contact-links">
+        <a class="btn btn-primary" href="mailto:raquelmg88@gmail.com">✉ raquelmg88@gmail.com</a>
+        <a class="btn btn-ghost" href="https://www.linkedin.com/in/raquel-mendes-29555123/" target="_blank" rel="noopener">LinkedIn ↗</a>
+        <a class="btn btn-ghost" href="https://github.com/Raquelmg1988" target="_blank" rel="noopener">GitHub ↗</a>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<footer>build © 2026 · raquel mendes · qa-portfolio.spec · status: passed</footer>
+
+<script>
+  document.getElementById('toggleEarlier').addEventListener('click', function(){
+    const list = document.getElementById('earlierList');
+    list.classList.toggle('open');
+    const label = this.querySelector('span');
+    label.textContent = list.classList.contains('open')
+      ? '▾ Ver experiência anterior (2009 — 2018, 5 posições)'
+      : '▸ Ver experiência anterior (2009 — 2018, 5 posições)';
+  });
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>
