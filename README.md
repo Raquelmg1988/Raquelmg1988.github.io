@@ -4,7 +4,7 @@ Código-fonte do meu portfólio pessoal, publicado via [GitHub Pages](https://pa
 
 🔗 **Site:** https://raquelmg1988.github.io
 
-QA Engineer Sênior — automação de testes E2E e API com Robot Framework, Playwright, Selenium e Python.
+QA Engineer Sênior — automação de testes E2E e API com Robot Framework, Playwright, e Python.
 
 ## Estrutura
 
